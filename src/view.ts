@@ -1,36 +1,36 @@
 import { ItemView, Menu, setIcon, WorkspaceLeaf } from "obsidian";
-import type DayspanPlugin from "../main";
+import type DayspannPlugin from "../main";
 import {
   differenceInCalendarDays,
   formatDateSpan,
   formatLocalizedDate,
 } from "./date-utils";
 import { durationUnit } from "./i18n";
-import { DayspanRecord } from "./model";
-import { DayspanSectionKind } from "./settings";
+import { DayspannRecord } from "./model";
+import { DayspannSectionKind } from "./settings";
 
-export const DAYSPAN_VIEW_TYPE = "dayspan-view";
+export const DAYSPANN_VIEW_TYPE = "dayspann-view";
 
 interface CountedRecord {
-  record: DayspanRecord;
+  record: DayspannRecord;
   difference: number;
 }
 
-export class DayspanView extends ItemView {
+export class DayspannView extends ItemView {
   private refreshVersion = 0;
   private resizeObserver: ResizeObserver | null = null;
   private readonly viewId = Math.random().toString(36).slice(2);
 
-  constructor(leaf: WorkspaceLeaf, private plugin: DayspanPlugin) {
+  constructor(leaf: WorkspaceLeaf, private plugin: DayspannPlugin) {
     super(leaf);
   }
 
   getViewType(): string {
-    return DAYSPAN_VIEW_TYPE;
+    return DAYSPANN_VIEW_TYPE;
   }
 
   getDisplayText(): string {
-    return "Dayspann";
+    return "dayspann";
   }
 
   getIcon(): string {
@@ -56,21 +56,21 @@ export class DayspanView extends ItemView {
     const refreshVersion = ++this.refreshVersion;
     const root = this.containerEl.children[1] as HTMLElement;
     root.empty();
-    root.addClass("dayspan-view");
+    root.addClass("dayspann-view");
     root.setCssProps({
-      "--dayspan-future-color": this.plugin.settings.futureColor,
-      "--dayspan-past-color": this.plugin.settings.pastColor,
+      "--dayspann-future-color": this.plugin.settings.futureColor,
+      "--dayspann-past-color": this.plugin.settings.pastColor,
     });
 
-    const header = root.createDiv("dayspan-header");
-    const heading = header.createDiv("dayspan-heading");
-    heading.createEl("h2", { text: "Dayspann" });
+    const header = root.createDiv("dayspann-header");
+    const heading = header.createDiv("dayspann-heading");
+    heading.createEl("h2", { text: "dayspann" });
     heading.createEl("p", {
-      cls: "dayspan-tagline",
+      cls: "dayspann-tagline",
       text: this.plugin.t("view.tagline"),
     });
 
-    const actions = header.createDiv("dayspan-header-actions");
+    const actions = header.createDiv("dayspann-header-actions");
     this.iconButton(actions, "refresh-cw", this.plugin.t("view.refresh"), () => void this.refresh());
     this.iconButton(actions, "plus", this.plugin.t("command.registerManually"), () => this.plugin.openManualEntry());
 
@@ -84,8 +84,8 @@ export class DayspanView extends ItemView {
     }));
 
     if (!counted.length) {
-      const empty = root.createDiv("dayspan-empty");
-      setIcon(empty.createDiv("dayspan-empty-icon"), "calendar-range");
+      const empty = root.createDiv("dayspann-empty");
+      setIcon(empty.createDiv("dayspann-empty-icon"), "calendar-range");
       empty.createEl("h3", { text: this.plugin.t("view.emptyTitle") });
       empty.createEl("p", {
         text: this.plugin.t("view.emptyDescription"),
@@ -107,7 +107,7 @@ export class DayspanView extends ItemView {
       .sort((a, b) => Math.abs(a.difference) - Math.abs(b.difference));
 
     const sections: Record<
-      DayspanSectionKind,
+      DayspannSectionKind,
       { icon: string; title: string; items: CountedRecord[] }
     > = {
       future: { icon: "calendar-clock", title: this.plugin.t("section.future"), items: future },
@@ -125,19 +125,19 @@ export class DayspanView extends ItemView {
     root: HTMLElement,
     icon: string,
     title: string,
-    kind: DayspanSectionKind,
+    kind: DayspannSectionKind,
     items: CountedRecord[]
   ): void {
     if (!items.length) return;
     const section = root.createEl("section", {
-      cls: `dayspan-section dayspan-section--${kind}`,
+      cls: `dayspann-section dayspann-section--${kind}`,
     });
     const collapsed = this.plugin.settings.collapsedSections.includes(kind);
-    section.toggleClass("dayspan-section--collapsed", collapsed);
+    section.toggleClass("dayspann-section--collapsed", collapsed);
 
-    const listId = `dayspan-list-${this.viewId}-${kind}`;
+    const listId = `dayspann-list-${this.viewId}-${kind}`;
     const heading = section.createEl("button", {
-      cls: "dayspan-section-heading",
+      cls: "dayspann-section-heading",
       attr: {
         type: "button",
         "aria-expanded": String(!collapsed),
@@ -148,20 +148,20 @@ export class DayspanView extends ItemView {
         ),
       },
     });
-    setIcon(heading.createSpan("dayspan-section-icon"), icon);
+    setIcon(heading.createSpan("dayspann-section-icon"), icon);
     heading.createSpan({
       text: this.plugin.t("section.heading", { title, count: items.length }),
     });
-    heading.createSpan("dayspan-section-line");
-    setIcon(heading.createSpan("dayspan-section-chevron"), "chevron-down");
+    heading.createSpan("dayspann-section-line");
+    setIcon(heading.createSpan("dayspann-section-chevron"), "chevron-down");
 
-    const list = section.createDiv({ cls: "dayspan-list", attr: { id: listId } });
+    const list = section.createDiv({ cls: "dayspann-list", attr: { id: listId } });
     list.hidden = collapsed;
     for (const item of items) this.renderCard(list, item);
 
     heading.addEventListener("click", () => {
-      const nextCollapsed = !section.hasClass("dayspan-section--collapsed");
-      section.toggleClass("dayspan-section--collapsed", nextCollapsed);
+      const nextCollapsed = !section.hasClass("dayspann-section--collapsed");
+      section.toggleClass("dayspann-section--collapsed", nextCollapsed);
       list.hidden = nextCollapsed;
       heading.setAttribute("aria-expanded", String(!nextCollapsed));
       heading.setAttribute(
@@ -177,7 +177,7 @@ export class DayspanView extends ItemView {
 
   private renderCard(list: HTMLElement, item: CountedRecord): void {
     const { record, difference } = item;
-    const card = list.createDiv("dayspan-card");
+    const card = list.createDiv("dayspann-card");
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", this.plugin.t("view.openRecord", { title: record.title }));
@@ -208,32 +208,32 @@ export class DayspanView extends ItemView {
       menu.showAtMouseEvent(event);
     });
 
-    const accent = card.createDiv("dayspan-card-accent");
+    const accent = card.createDiv("dayspann-card-accent");
     accent.setText(record.title.slice(0, 1));
 
-    const content = card.createDiv("dayspan-card-content");
+    const content = card.createDiv("dayspann-card-content");
     content.createEl("h3", { text: record.title });
     content.createDiv({
       text: formatLocalizedDate(record.date, this.plugin.locale()),
-      cls: "dayspan-card-date",
+      cls: "dayspann-card-date",
     });
     if (record.excerpt) {
-      content.createDiv({ text: record.excerpt.replace(/\s+/g, " "), cls: "dayspan-card-excerpt" });
+      content.createDiv({ text: record.excerpt.replace(/\s+/g, " "), cls: "dayspann-card-excerpt" });
     }
 
-    const count = card.createDiv("dayspan-count");
+    const count = card.createDiv("dayspann-count");
     if (difference === 0) {
-      count.createSpan({ text: "0", cls: "dayspan-count-number" });
-      count.createSpan({ text: this.plugin.t("section.today"), cls: "dayspan-count-unit" });
+      count.createSpan({ text: "0", cls: "dayspann-count-number" });
+      count.createSpan({ text: this.plugin.t("section.today"), cls: "dayspann-count-unit" });
     } else {
       const parts = formatDateSpan(record.date, this.plugin.todayKey(), record.displayMode);
-      if (parts.length > 1) count.addClass("dayspan-count--compound");
+      if (parts.length > 1) count.addClass("dayspann-count--compound");
       for (const part of parts) {
-        const segment = count.createSpan("dayspan-count-segment");
-        segment.createSpan({ text: String(part.value), cls: "dayspan-count-number" });
+        const segment = count.createSpan("dayspann-count-segment");
+        segment.createSpan({ text: String(part.value), cls: "dayspann-count-number" });
         segment.createSpan({
           text: durationUnit(this.plugin.locale(), part.unit, part.value),
-          cls: "dayspan-count-unit",
+          cls: "dayspann-count-unit",
         });
       }
     }
@@ -269,7 +269,7 @@ export class DayspanView extends ItemView {
     onClick: () => void
   ): HTMLButtonElement {
     const button = parent.createEl("button", {
-      cls: "clickable-icon dayspan-icon-button",
+      cls: "clickable-icon dayspann-icon-button",
       attr: { "aria-label": label },
     });
     setIcon(button, icon);
@@ -281,7 +281,7 @@ export class DayspanView extends ItemView {
   }
 
   private updateResponsiveState(width: number): void {
-    this.contentEl.classList.toggle("dayspan-is-narrow", width <= 600);
-    this.contentEl.classList.toggle("dayspan-is-extra-narrow", width <= 440);
+    this.contentEl.classList.toggle("dayspann-is-narrow", width <= 600);
+    this.contentEl.classList.toggle("dayspann-is-extra-narrow", width <= 440);
   }
 }

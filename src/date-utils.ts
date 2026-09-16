@@ -6,21 +6,21 @@ export interface CalendarDate {
   day: number;
 }
 
-export type DayspanDisplayMode =
+export type DayspannDisplayMode =
   | "days"
   | "months"
   | "years"
   | "months-days"
   | "years-months-days";
 
-export const DEFAULT_DISPLAY_MODE: DayspanDisplayMode = "days";
+export const DEFAULT_DISPLAY_MODE: DayspannDisplayMode = "days";
 
-export interface DayspanDisplayPart {
+export interface DayspannDisplayPart {
   value: number;
   unit: "day" | "month" | "year";
 }
 
-const DISPLAY_MODES = new Set<DayspanDisplayMode>([
+const DISPLAY_MODES = new Set<DayspannDisplayMode>([
   "days",
   "months",
   "years",
@@ -68,17 +68,17 @@ export function differenceInCalendarDays(
   return Math.round((targetTime - todayTime) / DAY_MS);
 }
 
-export function normalizeDisplayMode(value: unknown): DayspanDisplayMode {
-  return typeof value === "string" && DISPLAY_MODES.has(value as DayspanDisplayMode)
-    ? (value as DayspanDisplayMode)
+export function normalizeDisplayMode(value: unknown): DayspannDisplayMode {
+  return typeof value === "string" && DISPLAY_MODES.has(value as DayspannDisplayMode)
+    ? (value as DayspannDisplayMode)
     : DEFAULT_DISPLAY_MODE;
 }
 
 export function formatDateSpan(
   firstDateKey: string,
   secondDateKey: string,
-  mode: DayspanDisplayMode
-): DayspanDisplayPart[] {
+  mode: DayspannDisplayMode
+): DayspannDisplayPart[] {
   const first = parseDateKey(firstDateKey);
   const second = parseDateKey(secondDateKey);
   if (!first || !second) throw new Error("日付は YYYY-MM-DD 形式で入力してください");

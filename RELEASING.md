@@ -1,4 +1,4 @@
-# Releasing Dayspann
+# Releasing dayspann
 
 This document is the maintainer checklist for beta and Community Plugins releases.
 
@@ -15,7 +15,7 @@ This document is the maintainer checklist for beta and Community Plugins release
 4. Commit and push the `main` branch.
 5. Confirm that the CI workflow passes on GitHub.
 
-Never commit `data.json`, `main.js`, `node_modules`, or real Dayspann records. They are excluded by `.gitignore`, but always review `git status` before committing.
+Never commit `data.json`, `main.js`, `node_modules`, or real dayspann records. They are excluded by `.gitignore`, but always review `git status` before committing.
 
 ## Prepare a version
 

@@ -1,34 +1,34 @@
 import { parseYaml, stringifyYaml, TFile } from "obsidian";
 import {
   DEFAULT_DISPLAY_MODE,
-  DayspanDisplayMode,
+  DayspannDisplayMode,
   normalizeDisplayMode,
   parseDateKey,
 } from "./date-utils";
 import { formatSourceReference, parseSourceReference } from "./source-link";
 
-export interface DayspanRecord {
+export interface DayspannRecord {
   file: TFile;
   title: string;
   date: string;
-  displayMode: DayspanDisplayMode;
+  displayMode: DayspannDisplayMode;
   excerpt: string;
   sourcePath?: string;
   sourceLine?: number;
   created: string;
 }
 
-export interface DayspanDraft {
+export interface DayspannDraft {
   title: string;
   date: string;
-  displayMode?: DayspanDisplayMode;
+  displayMode?: DayspannDisplayMode;
   excerpt: string;
   sourcePath?: string;
   sourceLine?: number;
   created?: string;
 }
 
-export function serializeRecord(draft: DayspanDraft): string {
+export function serializeRecord(draft: DayspannDraft): string {
   const frontmatter: Record<string, string | number> = {
     type: "dayspann",
     title: draft.title.trim(),
@@ -45,7 +45,7 @@ export function serializeRecord(draft: DayspanDraft): string {
   return `---\n${yaml}\n---\n${body ? `\n${body}\n` : ""}`;
 }
 
-export function parseRecord(file: TFile, content: string): DayspanRecord | null {
+export function parseRecord(file: TFile, content: string): DayspannRecord | null {
   const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)([\s\S]*)$/.exec(content);
   if (!match || match[1] === undefined || match[2] === undefined) return null;
 
@@ -56,6 +56,7 @@ export function parseRecord(file: TFile, content: string): DayspanRecord | null 
     return null;
   }
 
+  // Read pre-0.1.7 beta records so they can be migrated safely.
   if (data.type !== "dayspann" && data.type !== "dayspan") return null;
   const title = typeof data.title === "string" ? data.title.trim() : "";
   const date =

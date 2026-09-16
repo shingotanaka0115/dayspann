@@ -30,6 +30,17 @@ export default defineConfig(
   },
   ...obsidianmd.configs.recommended,
   {
+    rules: {
+      "obsidianmd/ui/sentence-case": [
+        "warn",
+        {
+          brands: ["dayspann"],
+          enforceCamelCaseLower: true,
+        },
+      ],
+    },
+  },
+  {
     files: ["tests/**/*.test.ts"],
     rules: {
       "@typescript-eslint/no-floating-promises": "off",

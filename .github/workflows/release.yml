@@ -1,4 +1,4 @@
-name: Release Dayspann
+name: Release dayspann
 
 on:
   push:

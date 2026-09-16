@@ -1,27 +1,34 @@
 # Changelog
 
-All notable changes to Dayspann will be documented in this file.
+All notable changes to dayspann will be documented in this file.
+
+## 0.1.7
+
+- Standardize the display name as lowercase `dayspann`.
+- Change the internal plugin ID, installation folder, view ID, CSS namespace, and new record type to `dayspann` before community testing.
+- Use `dayspann` as the default record folder while retaining read compatibility with pre-0.1.7 beta records.
+- Automatically rename the former default `Dayspan` record folder and update legacy `type: dayspan` records after upgrading.
 
 ## 0.1.6
 
-- Replace the functional list-view tagline with the concept-led Dayspann tagline.
+- Replace the functional list-view tagline with the concept-led dayspann tagline.
 - Use “日々の中から、記念日をすくい上げる。” in Japanese and “Uncover the days worth remembering.” in English.
 
 ## 0.1.5
 
-- Rename the public-facing plugin from Dayspan to Dayspann.
-- Preserve the internal plugin ID and support existing `Dayspan` record folders and `type: dayspan` records.
-- Use `Dayspann` and `type: dayspann` for new record folders and records.
+- Rename the public-facing plugin from Dayspan to dayspann.
+- Preserve the former internal plugin ID and support existing `Dayspan` record folders and `type: dayspan` records.
+- Use `dayspann` and `type: dayspann` for new record folders and records.
 - Update documentation and BRAT instructions for the renamed GitHub repository.
 
 ## 0.1.4
 
-- Open the Dayspan record before normalizing its source-note link.
+- Open the dayspann record before normalizing its source-note link.
 - Prevent card clicks from propagating to other note-opening handlers.
 
 ## 0.1.3
 
-- Open the saved Dayspan record whenever a date card is selected.
+- Open the saved dayspann record whenever a date card is selected.
 - Store the source note as a clickable Obsidian link in records created from selected text.
 - Let existing and manually created records choose, change, or remove a source note from the edit dialog.
 - Add BRAT installation instructions for public beta testing.

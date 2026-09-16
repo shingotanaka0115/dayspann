@@ -12,19 +12,19 @@ import {
   parseDateKey,
 } from "./date-utils";
 import { Translator } from "./i18n";
-import { DayspanDraft } from "./model";
+import { DayspannDraft } from "./model";
 
-export class DayspanEntryModal extends Modal {
-  private draft: DayspanDraft;
+export class DayspannEntryModal extends Modal {
+  private draft: DayspannDraft;
   private errorEl?: HTMLElement;
 
   constructor(
     app: App,
-    initial: DayspanDraft,
+    initial: DayspannDraft,
     private heading: string,
     private submitLabel: string,
     private t: Translator,
-    private onSubmit: (draft: DayspanDraft) => Promise<void>
+    private onSubmit: (draft: DayspannDraft) => Promise<void>
   ) {
     super(app);
     this.draft = {
@@ -37,7 +37,7 @@ export class DayspanEntryModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
     this.titleEl.setText(this.heading);
-    this.modalEl.addClass("dayspan-entry-modal");
+    this.modalEl.addClass("dayspann-entry-modal");
 
     new Setting(contentEl)
       .setName(this.t("modal.name"))
@@ -75,14 +75,14 @@ export class DayspanEntryModal extends Modal {
           });
       });
 
-    const excerptWrap = contentEl.createDiv("dayspan-modal-field");
+    const excerptWrap = contentEl.createDiv("dayspann-modal-field");
     excerptWrap.createEl("label", { text: this.t("modal.excerpt") });
     excerptWrap.createDiv({
       text: this.t("modal.excerptDesc"),
       cls: "setting-item-description",
     });
     const excerpt = excerptWrap.createEl("textarea", {
-      cls: "dayspan-modal-textarea",
+      cls: "dayspann-modal-textarea",
     });
     excerpt.value = this.draft.excerpt;
     excerpt.addEventListener("input", () => {
@@ -122,9 +122,9 @@ export class DayspanEntryModal extends Modal {
         });
     });
 
-    this.errorEl = contentEl.createDiv("dayspan-modal-error");
+    this.errorEl = contentEl.createDiv("dayspann-modal-error");
 
-    const actions = contentEl.createDiv("dayspan-modal-actions");
+    const actions = contentEl.createDiv("dayspann-modal-actions");
     const cancel = actions.createEl("button", { text: this.t("action.cancel") });
     cancel.addEventListener("click", () => this.close());
     const submit = actions.createEl("button", {

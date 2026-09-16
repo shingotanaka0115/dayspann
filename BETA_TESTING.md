@@ -1,8 +1,8 @@
-# Dayspann beta testing guide
+# dayspann beta testing guide
 
 [English](BETA_TESTING.md) | [日本語](BETA_TESTING.ja.md)
 
-Thank you for testing Dayspann. You do not need to complete every check. Testing the parts closest to your normal workflow is already helpful.
+Thank you for testing dayspann. You do not need to complete every check. Testing the parts closest to your normal workflow is already helpful.
 
 > [!CAUTION]
 > This is beta software. Start in a test vault or a backed-up vault. Before sharing screenshots, check that they do not contain private notes or personal information.
@@ -19,9 +19,9 @@ Thank you for testing Dayspann. You do not need to complete every check. Testing
    shingotanaka0115/dayspann
    ```
 
-6. Open **Settings → Community plugins** and enable **Dayspann**.
-7. Confirm that the Dayspann version is `0.1.6` or later.
-8. Open Dayspann from its ribbon icon or run **Open list** from the Command palette.
+6. Open **Settings → Community plugins** and enable **dayspann**.
+7. Confirm that the dayspann version is `0.1.7` or later.
+8. Open dayspann from its ribbon icon or run **Open list** from the Command palette.
 
 You can also enter the same repository with **Add beta plugin** in BRAT's settings.
 
@@ -31,24 +31,24 @@ These checks usually take 10–15 minutes.
 
 ### 1. Installation and launch
 
-- [ ] BRAT installs Dayspann without an error.
-- [ ] Dayspann can be enabled.
+- [ ] BRAT installs dayspann without an error.
+- [ ] dayspann can be enabled.
 - [ ] The list opens without a broken layout.
 
 ### 2. Register selected text
 
 - [ ] Text can be selected in a Markdown note.
 - [ ] **Add selected text** in the Command palette creates a record.
-- [ ] In editing view, **Add to Dayspann** in the context menu also works.
+- [ ] In editing view, **Add to dayspann** in the context menu also works.
 - [ ] One registration does not show a duplicate card.
 - [ ] The source Markdown note is not modified.
 
-### 3. Dayspann record and source link
+### 3. dayspann record and source link
 
-- [ ] Selecting a card opens its Dayspann record first instead of jumping directly to the source note.
+- [ ] Selecting a card opens its dayspann record first instead of jumping directly to the source note.
 - [ ] The record's `source` property links to the source note.
 - [ ] Selecting the `source` link opens the source note.
-- [ ] The card is still present after returning to Dayspann.
+- [ ] The card is still present after returning to dayspann.
 
 ### 4. Manual records and duration formats
 
@@ -68,7 +68,7 @@ These checks usually take 10–15 minutes.
 
 - [ ] Records remain after restarting Obsidian.
 - [ ] Collapsed sections and settings remain after restarting.
-- [ ] On mobile, the list, registration, Dayspann record, and `source` link work.
+- [ ] On mobile, the list, registration, dayspann record, and `source` link work.
 - [ ] When using Obsidian Sync, iCloud, or another supported setup, records reach the other device.
 
 ## Report your result
@@ -87,7 +87,7 @@ If everything works, your environment and a short “all checks passed” messag
 - Device:
 - OS and version:
 - Obsidian version:
-- Dayspann version:
+- dayspann version:
 - Obsidian display language:
 - Theme, or "Default":
 - Sync method, if any:
@@ -114,12 +114,12 @@ Remove or hide private notes and personal information before attaching screensho
 
 ## Update the beta
 
-Run **BRAT: Check for updates to all beta plugins and UPDATE** from the Command palette. If an old interface or behavior remains after updating, disable and re-enable Dayspann or restart Obsidian.
+Run **BRAT: Plugins: Check for updates to all beta plugins and UPDATE** from the Command palette. If an old interface or behavior remains after updating, disable and re-enable dayspann or restart Obsidian.
 
 ## Finish testing
 
-1. Disable Dayspann under **Settings → Community plugins**.
-2. Uninstall Dayspann.
-3. Remove Dayspann from BRAT's managed beta plugins.
+1. Disable dayspann under **Settings → Community plugins**.
+2. Uninstall dayspann.
+3. Remove dayspann from BRAT's managed beta plugins.
 
-Uninstalling Dayspann does not automatically delete the Markdown record files it created in your vault. Review and delete those files manually only if you no longer need them.
+Uninstalling dayspann does not automatically delete the Markdown record files it created in your vault. Review and delete those files manually only if you no longer need them.

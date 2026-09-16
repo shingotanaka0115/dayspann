@@ -1,20 +1,21 @@
-export type DayspanLocale = "ja" | "en";
+export type DayspannLocale = "ja" | "en";
 
 const JA_MESSAGES = {
-  "ribbon.open": "Dayspannを開く",
+  "ribbon.open": "dayspannを開く",
   "command.openList": "一覧を開く",
   "command.registerSelection": "選択した文章を登録",
   "command.registerManually": "手動で登録",
-  "context.register": "Dayspannに登録",
+  "context.register": "dayspannに登録",
   "notice.selectText": "文章を選択してから実行してください",
   "notice.selectMarkdownText": "Markdown本文の文章を選択してから実行してください",
-  "notice.registered": "Dayspannに登録しました",
-  "notice.updated": "Dayspannを更新しました",
-  "notice.trashed": "Dayspannの記録をゴミ箱へ移動しました",
+  "notice.registered": "dayspannに登録しました",
+  "notice.updated": "dayspannを更新しました",
+  "notice.trashed": "dayspannの記録をゴミ箱へ移動しました",
   "notice.sourceMissing": "元ノートが見つからないため、登録ノートを開きました",
-  "modal.registerSelection": "Dayspannに登録",
-  "modal.registerManual": "Dayspannに手動登録",
-  "modal.edit": "Dayspannを編集",
+  "notice.migrationFailed": "旧dayspanデータの自動移行に失敗しました。元データは変更されていません。",
+  "modal.registerSelection": "dayspannに登録",
+  "modal.registerManual": "dayspannに手動登録",
+  "modal.edit": "dayspannを編集",
   "modal.name": "名前",
   "modal.nameDesc": "一覧に表示する名前です",
   "modal.date": "基準日",
@@ -52,14 +53,14 @@ const JA_MESSAGES = {
   "view.tagline": "日々の中から、記念日をすくい上げる。",
   "view.refresh": "再読み込み",
   "view.emptyTitle": "まだ記録がありません",
-  "view.emptyDescription": "文章を選択して、コマンドまたは右クリックから「Dayspannに登録」を実行してください。",
+  "view.emptyDescription": "文章を選択して、コマンドまたは右クリックから「dayspannに登録」を実行してください。",
   "view.openRecord": "{title}を開く",
   "section.future": "あと何日",
   "section.today": "今日",
   "section.past": "あれから何日",
   "section.heading": "{title}（{count}）",
   "setting.storage": "記録の保存先",
-  "setting.storageDesc": "Dayspannの登録情報をMarkdownで保存するVault内フォルダです",
+  "setting.storageDesc": "dayspannの登録情報をMarkdownで保存するVault内フォルダです",
   "setting.sectionOrder": "セクションの並び順",
   "setting.position": "上から{position}番目",
   "setting.colors": "表示色",
@@ -77,20 +78,21 @@ const JA_MESSAGES = {
 export type TranslationKey = keyof typeof JA_MESSAGES;
 
 const EN_MESSAGES: Record<TranslationKey, string> = {
-  "ribbon.open": "Open Dayspann",
+  "ribbon.open": "Open dayspann",
   "command.openList": "Open list",
   "command.registerSelection": "Add selected text",
   "command.registerManually": "Add manually",
-  "context.register": "Add to Dayspann",
+  "context.register": "Add to dayspann",
   "notice.selectText": "Select some text first.",
   "notice.selectMarkdownText": "Select text in a Markdown note first.",
-  "notice.registered": "Added to Dayspann.",
-  "notice.updated": "Dayspann entry updated.",
-  "notice.trashed": "Dayspann entry moved to the trash.",
-  "notice.sourceMissing": "The source note was not found, so the Dayspann entry was opened instead.",
-  "modal.registerSelection": "Add to Dayspann",
-  "modal.registerManual": "Add to Dayspann manually",
-  "modal.edit": "Edit Dayspann entry",
+  "notice.registered": "Added to dayspann.",
+  "notice.updated": "dayspann entry updated.",
+  "notice.trashed": "dayspann entry moved to the trash.",
+  "notice.sourceMissing": "The source note was not found, so the dayspann entry was opened instead.",
+  "notice.migrationFailed": "Could not migrate the former dayspan data. The original data was not changed.",
+  "modal.registerSelection": "Add to dayspann",
+  "modal.registerManual": "Add to dayspann manually",
+  "modal.edit": "Edit dayspann entry",
   "modal.name": "Name",
   "modal.nameDesc": "The name shown in the list.",
   "modal.date": "Reference date",
@@ -116,7 +118,7 @@ const EN_MESSAGES: Record<TranslationKey, string> = {
   "action.chooseSource": "Choose note",
   "action.clearSource": "Remove source",
   "action.edit": "Edit",
-  "action.openRecord": "Open Dayspann entry",
+  "action.openRecord": "Open dayspann entry",
   "action.openSource": "Open source note",
   "action.delete": "Delete",
   "action.actions": "Actions",
@@ -128,14 +130,14 @@ const EN_MESSAGES: Record<TranslationKey, string> = {
   "view.tagline": "Uncover the days worth remembering.",
   "view.refresh": "Refresh",
   "view.emptyTitle": "No entries yet",
-  "view.emptyDescription": "Select some text, then run “Add to Dayspann” from the command palette or context menu.",
+  "view.emptyDescription": "Select some text, then run “Add to dayspann” from the command palette or context menu.",
   "view.openRecord": "Open {title}",
   "section.future": "Days remaining",
   "section.today": "Today",
   "section.past": "Days elapsed",
   "section.heading": "{title} ({count})",
   "setting.storage": "Storage folder",
-  "setting.storageDesc": "The folder in this vault where Dayspann stores its Markdown entries.",
+  "setting.storageDesc": "The folder in this vault where dayspann stores its Markdown entries.",
   "setting.sectionOrder": "Section order",
   "setting.position": "Position {position} from the top",
   "setting.colors": "Colors",
@@ -153,7 +155,7 @@ const EN_MESSAGES: Record<TranslationKey, string> = {
 export type TranslationVariables = Record<string, string | number>;
 export type Translator = (key: TranslationKey, variables?: TranslationVariables) => string;
 
-export function resolveLocale(language: string): DayspanLocale {
+export function resolveLocale(language: string): DayspannLocale {
   return language.toLowerCase().startsWith("ja") ? "ja" : "en";
 }
 
@@ -169,7 +171,7 @@ export function createTranslator(language: string): Translator {
 }
 
 export function durationUnit(
-  locale: DayspanLocale,
+  locale: DayspannLocale,
   unit: "day" | "month" | "year",
   value: number
 ): string {

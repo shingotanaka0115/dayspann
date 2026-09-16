@@ -7,6 +7,7 @@ import {
   Menu,
   Notice,
   normalizePath,
+  parseYaml,
   Plugin,
   PluginSettingTab,
   SettingDefinitionItem,
@@ -16,15 +17,15 @@ import {
 import { toDateKey, parseDateKey } from "./src/date-utils";
 import {
   createTranslator,
-  DayspanLocale,
+  DayspannLocale,
   resolveLocale,
   TranslationKey,
   TranslationVariables,
 } from "./src/i18n";
-import { DayspanEntryModal } from "./src/modals";
+import { DayspannEntryModal } from "./src/modals";
 import {
-  DayspanDraft,
-  DayspanRecord,
+  DayspannDraft,
+  DayspannRecord,
   makeTitleFromSelection,
   parseRecord,
   sanitizeFileName,
@@ -32,7 +33,7 @@ import {
 } from "./src/model";
 import {
   DEFAULT_SECTION_ORDER,
-  DayspanSectionKind,
+  DayspannSectionKind,
   normalizeCollapsedSections,
   normalizeSectionOrder,
 } from "./src/settings";
@@ -41,32 +42,33 @@ import {
   isLinkedSourceReference,
   parseSourceReference,
 } from "./src/source-link";
-import { DAYSPAN_VIEW_TYPE, DayspanView } from "./src/view";
+import { DAYSPANN_VIEW_TYPE, DayspannView } from "./src/view";
 
-export interface DayspanSettings {
+export interface DayspannSettings {
   storageFolder: string;
   futureColor: string;
   pastColor: string;
-  sectionOrder: DayspanSectionKind[];
-  collapsedSections: DayspanSectionKind[];
+  sectionOrder: DayspannSectionKind[];
+  collapsedSections: DayspannSectionKind[];
 }
 
-const DEFAULT_SETTINGS: DayspanSettings = {
-  storageFolder: "Dayspann",
+const DEFAULT_SETTINGS: DayspannSettings = {
+  storageFolder: "dayspann",
   futureColor: "#2ea8ff",
   pastColor: "#f59e0b",
   sectionOrder: [...DEFAULT_SECTION_ORDER],
   collapsedSections: [],
 };
 
-export default class DayspanPlugin extends Plugin {
-  settings: DayspanSettings = DEFAULT_SETTINGS;
+export default class DayspannPlugin extends Plugin {
+  settings: DayspannSettings = DEFAULT_SETTINGS;
   private refreshTimer?: number;
 
   async onload(): Promise<void> {
     await this.loadSettings();
+    await this.migrateLegacyData();
 
-    this.registerView(DAYSPAN_VIEW_TYPE, (leaf) => new DayspanView(leaf, this));
+    this.registerView(DAYSPANN_VIEW_TYPE, (leaf) => new DayspannView(leaf, this));
 
     this.addRibbonIcon("calendar-range", this.t("ribbon.open"), () => void this.activateView());
 
@@ -115,7 +117,7 @@ export default class DayspanPlugin extends Plugin {
       )
     );
 
-    this.addSettingTab(new DayspanSettingTab(this.app, this));
+    this.addSettingTab(new DayspannSettingTab(this.app, this));
   }
 
   onunload(): void {
@@ -126,7 +128,7 @@ export default class DayspanPlugin extends Plugin {
     return toDateKey(new Date());
   }
 
-  locale(): DayspanLocale {
+  locale(): DayspannLocale {
     return resolveLocale(getLanguage());
   }
 
@@ -135,14 +137,14 @@ export default class DayspanPlugin extends Plugin {
   }
 
   async activateView(): Promise<void> {
-    let leaf = this.app.workspace.getLeavesOfType(DAYSPAN_VIEW_TYPE)[0];
+    let leaf = this.app.workspace.getLeavesOfType(DAYSPANN_VIEW_TYPE)[0];
     if (!leaf) {
       leaf = this.app.workspace.getLeaf(true);
-      await leaf.setViewState({ type: DAYSPAN_VIEW_TYPE, active: true });
+      await leaf.setViewState({ type: DAYSPANN_VIEW_TYPE, active: true });
     }
     await this.app.workspace.revealLeaf(leaf);
     const view = leaf.view;
-    if (view instanceof DayspanView) await view.refresh();
+    if (view instanceof DayspannView) await view.refresh();
   }
 
   openSelectionEntry(editor: Editor, view: MarkdownView | MarkdownFileInfo): void {
@@ -189,8 +191,8 @@ export default class DayspanPlugin extends Plugin {
     });
   }
 
-  private openSelectionDraft(initial: DayspanDraft): void {
-    new DayspanEntryModal(
+  private openSelectionDraft(initial: DayspannDraft): void {
+    new DayspannEntryModal(
       this.app,
       initial,
       this.t("modal.registerSelection"),
@@ -205,7 +207,7 @@ export default class DayspanPlugin extends Plugin {
   }
 
   openManualEntry(): void {
-    new DayspanEntryModal(
+    new DayspannEntryModal(
       this.app,
       { title: "", date: this.todayKey(), excerpt: "" },
       this.t("modal.registerManual"),
@@ -219,8 +221,8 @@ export default class DayspanPlugin extends Plugin {
     ).open();
   }
 
-  openEditEntry(record: DayspanRecord): void {
-    new DayspanEntryModal(
+  openEditEntry(record: DayspannRecord): void {
+    new DayspannEntryModal(
       this.app,
       {
         title: record.title,
@@ -242,7 +244,7 @@ export default class DayspanPlugin extends Plugin {
     ).open();
   }
 
-  async deleteRecord(record: DayspanRecord): Promise<void> {
+  async deleteRecord(record: DayspannRecord): Promise<void> {
     const confirmed = await this.app.fileManager.promptForDeletion(record.file);
     if (!confirmed) return;
     await this.app.fileManager.trashFile(record.file);
@@ -250,7 +252,7 @@ export default class DayspanPlugin extends Plugin {
     await this.refreshViews();
   }
 
-  async openRecordSource(record: DayspanRecord): Promise<void> {
+  async openRecordSource(record: DayspannRecord): Promise<void> {
     const source = record.sourcePath ? this.app.vault.getFileByPath(record.sourcePath) : null;
     if (!source) {
       await this.openRecordFile(record);
@@ -271,7 +273,7 @@ export default class DayspanPlugin extends Plugin {
     }
   }
 
-  async openRecordFile(record: DayspanRecord): Promise<void> {
+  async openRecordFile(record: DayspannRecord): Promise<void> {
     const leaf = this.app.workspace.getLeaf(false);
     await leaf.openFile(record.file, { active: true });
 
@@ -289,7 +291,7 @@ export default class DayspanPlugin extends Plugin {
     }
   }
 
-  async loadRecords(): Promise<DayspanRecord[]> {
+  async loadRecords(): Promise<DayspannRecord[]> {
     const folder = this.normalizedStorageFolder();
     const root = this.app.vault.getAbstractFileByPath(folder);
     if (!(root instanceof TFolder)) return [];
@@ -300,12 +302,12 @@ export default class DayspanPlugin extends Plugin {
     const parsed = await Promise.all(
       files.map(async (file) => parseRecord(file, await this.app.vault.cachedRead(file)))
     );
-    return parsed.filter((record): record is DayspanRecord => record !== null);
+    return parsed.filter((record): record is DayspannRecord => record !== null);
   }
 
   async refreshViews(): Promise<void> {
-    for (const leaf of this.app.workspace.getLeavesOfType(DAYSPAN_VIEW_TYPE)) {
-      if (leaf.view instanceof DayspanView) await leaf.view.refresh();
+    for (const leaf of this.app.workspace.getLeavesOfType(DAYSPANN_VIEW_TYPE)) {
+      if (leaf.view instanceof DayspannView) await leaf.view.refresh();
     }
   }
 
@@ -313,7 +315,7 @@ export default class DayspanPlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  async setSectionCollapsed(kind: DayspanSectionKind, collapsed: boolean): Promise<void> {
+  async setSectionCollapsed(kind: DayspannSectionKind, collapsed: boolean): Promise<void> {
     const collapsedSections = this.settings.collapsedSections.filter((item) => item !== kind);
     if (collapsed) collapsedSections.push(kind);
     this.settings.collapsedSections = collapsedSections;
@@ -321,7 +323,7 @@ export default class DayspanPlugin extends Plugin {
   }
 
   private async loadSettings(): Promise<void> {
-    const saved = (await this.loadData()) as Partial<DayspanSettings> | null;
+    const saved = (await this.loadData()) as Partial<DayspannSettings> | null;
     const savedStorageFolder = saved?.storageFolder?.trim();
     const legacyStorageFolder = "Dayspan";
     const storageFolder = savedStorageFolder
@@ -337,6 +339,53 @@ export default class DayspanPlugin extends Plugin {
       sectionOrder: normalizeSectionOrder(saved?.sectionOrder),
       collapsedSections: normalizeCollapsedSections(saved?.collapsedSections),
     };
+  }
+
+  private async migrateLegacyData(): Promise<void> {
+    try {
+      const legacyStorageFolder = "Dayspan";
+      if (this.normalizedStorageFolder() === legacyStorageFolder) {
+        const legacyFolder = this.app.vault.getAbstractFileByPath(legacyStorageFolder);
+        const currentFolder = this.app.vault.getAbstractFileByPath(DEFAULT_SETTINGS.storageFolder);
+
+        if (legacyFolder instanceof TFolder && !currentFolder) {
+          await this.app.fileManager.renameFile(legacyFolder, DEFAULT_SETTINGS.storageFolder);
+          this.settings.storageFolder = DEFAULT_SETTINGS.storageFolder;
+          await this.saveSettings();
+        } else if (!legacyFolder && currentFolder instanceof TFolder) {
+          this.settings.storageFolder = DEFAULT_SETTINGS.storageFolder;
+          await this.saveSettings();
+        }
+      }
+
+      const root = this.app.vault.getAbstractFileByPath(this.normalizedStorageFolder());
+      if (!(root instanceof TFolder)) return;
+
+      const files: TFile[] = [];
+      this.collectMarkdownFiles(root, files);
+      for (const file of files) {
+        const content = await this.app.vault.cachedRead(file);
+        const frontmatterMatch = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(content);
+        if (!frontmatterMatch?.[1]) continue;
+
+        let frontmatter: Record<string, unknown>;
+        try {
+          frontmatter = parseYaml(frontmatterMatch[1]) as Record<string, unknown>;
+        } catch {
+          continue;
+        }
+        if (frontmatter.type !== "dayspan") continue;
+
+        await this.app.fileManager.processFrontMatter(
+          file,
+          (recordFrontmatter: Record<string, unknown>) => {
+            if (recordFrontmatter.type === "dayspan") recordFrontmatter.type = "dayspann";
+          }
+        );
+      }
+    } catch {
+      new Notice(this.t("notice.migrationFailed"));
+    }
   }
 
   private inferDate(file: TFile | null): string {
@@ -386,7 +435,7 @@ export default class DayspanPlugin extends Plugin {
     return value || DEFAULT_SETTINGS.storageFolder;
   }
 
-  private async createRecord(draft: DayspanDraft): Promise<TFile> {
+  private async createRecord(draft: DayspannDraft): Promise<TFile> {
     const folder = this.normalizedStorageFolder();
     await this.ensureFolder(folder);
     const base = `${draft.date} - ${sanitizeFileName(draft.title, this.t("default.entry"))}`;
@@ -430,20 +479,20 @@ export default class DayspanPlugin extends Plugin {
   }
 
   private scheduleRefresh(): void {
-    if (!this.app.workspace.getLeavesOfType(DAYSPAN_VIEW_TYPE).length) return;
+    if (!this.app.workspace.getLeavesOfType(DAYSPANN_VIEW_TYPE).length) return;
     if (this.refreshTimer) window.clearTimeout(this.refreshTimer);
     this.refreshTimer = window.setTimeout(() => void this.refreshViews(), 150);
   }
 }
 
-type DayspanSettingKey = "storageFolder";
+type DayspannSettingKey = "storageFolder";
 
-class DayspanSettingTab extends PluginSettingTab {
-  constructor(app: App, private plugin: DayspanPlugin) {
+class DayspannSettingTab extends PluginSettingTab {
+  constructor(app: App, private plugin: DayspannPlugin) {
     super(app, plugin);
   }
 
-  getSettingDefinitions(): SettingDefinitionItem<DayspanSettingKey>[] {
+  getSettingDefinitions(): SettingDefinitionItem<DayspannSettingKey>[] {
     return [
       {
         name: this.plugin.t("setting.storage"),
@@ -514,18 +563,18 @@ class DayspanSettingTab extends PluginSettingTab {
     ];
   }
 
-  getControlValue(key: DayspanSettingKey): unknown {
+  getControlValue(key: DayspannSettingKey): unknown {
     return this.plugin.settings[key];
   }
 
-  async setControlValue(key: DayspanSettingKey, value: unknown): Promise<void> {
+  async setControlValue(key: DayspannSettingKey, value: unknown): Promise<void> {
     if (key !== "storageFolder" || typeof value !== "string") return;
     this.plugin.settings.storageFolder = value.trim() || DEFAULT_SETTINGS.storageFolder;
     await this.plugin.saveSettings();
     await this.plugin.refreshViews();
   }
 
-  private sectionTitle(kind: DayspanSectionKind): string {
+  private sectionTitle(kind: DayspannSectionKind): string {
     if (kind === "future") return this.plugin.t("section.future");
     if (kind === "today") return this.plugin.t("section.today");
     return this.plugin.t("section.past");
