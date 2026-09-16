@@ -4,6 +4,8 @@
 
 Pan through your days and lift out meaningful anniversaries like gold with Obsidian.
 
+dayspann is built on the belief that life becomes richer as you uncover and gather more anniversaries of your own.
+
 dayspann lets you choose meaningful dates from your past records or future plans. It then connects each chosen date to today, making the span between them visible: how much time has passed, or how much remains. From that span, your own Story can emerge.
 
 dayspann does not automatically analyze your vault. You choose what becomes an anniversary.
@@ -59,7 +61,7 @@ The default record folder for new installations is `dayspann`. You can change it
 
 ## Name
 
-`dayspann` begins with the philosophy of **days + pann(ing)**: panning through many days to lift out a meaningful anniversary like gold. The final `n` makes **panning** more visible in the spelling.
+`dayspann` begins with the philosophy of **days + pann(ing)**: panning through many days to lift out meaningful anniversaries like gold, gathering more of them as your own, and enriching your life. The final `n` makes **panning** more visible in the spelling.
 
 As a result, the name also contains **day span**: the span between the chosen date and today. Looking into that span allows your own Story to emerge.
 
