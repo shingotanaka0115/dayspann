@@ -30,7 +30,7 @@ export class DayspanView extends ItemView {
   }
 
   getDisplayText(): string {
-    return "Dayspan";
+    return "Dayspann";
   }
 
   getIcon(): string {
@@ -64,7 +64,7 @@ export class DayspanView extends ItemView {
 
     const header = root.createDiv("dayspan-header");
     const heading = header.createDiv("dayspan-heading");
-    heading.createEl("h2", { text: "Dayspan" });
+    heading.createEl("h2", { text: "Dayspann" });
     heading.createEl("p", {
       cls: "dayspan-tagline",
       text: this.plugin.t("view.tagline"),

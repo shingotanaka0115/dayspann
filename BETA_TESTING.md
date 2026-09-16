@@ -1,8 +1,8 @@
-# Dayspan beta testing guide
+# Dayspann beta testing guide
 
 [English](BETA_TESTING.md) | [日本語](BETA_TESTING.ja.md)
 
-Thank you for testing Dayspan. You do not need to complete every check. Testing the parts closest to your normal workflow is already helpful.
+Thank you for testing Dayspann. You do not need to complete every check. Testing the parts closest to your normal workflow is already helpful.
 
 > [!CAUTION]
 > This is beta software. Start in a test vault or a backed-up vault. Before sharing screenshots, check that they do not contain private notes or personal information.
@@ -16,12 +16,12 @@ Thank you for testing Dayspan. You do not need to complete every check. Testing 
 5. Enter this repository:
 
    ```text
-   shingotanaka0115/dayspan
+   shingotanaka0115/dayspann
    ```
 
-6. Open **Settings → Community plugins** and enable **Dayspan**.
-7. Confirm that the Dayspan version is `0.1.4` or later.
-8. Open Dayspan from its ribbon icon or run **Open list** from the Command palette.
+6. Open **Settings → Community plugins** and enable **Dayspann**.
+7. Confirm that the Dayspann version is `0.1.5` or later.
+8. Open Dayspann from its ribbon icon or run **Open list** from the Command palette.
 
 You can also enter the same repository with **Add beta plugin** in BRAT's settings.
 
@@ -31,24 +31,24 @@ These checks usually take 10–15 minutes.
 
 ### 1. Installation and launch
 
-- [ ] BRAT installs Dayspan without an error.
-- [ ] Dayspan can be enabled.
+- [ ] BRAT installs Dayspann without an error.
+- [ ] Dayspann can be enabled.
 - [ ] The list opens without a broken layout.
 
 ### 2. Register selected text
 
 - [ ] Text can be selected in a Markdown note.
 - [ ] **Add selected text** in the Command palette creates a record.
-- [ ] In editing view, **Add to Dayspan** in the context menu also works.
+- [ ] In editing view, **Add to Dayspann** in the context menu also works.
 - [ ] One registration does not show a duplicate card.
 - [ ] The source Markdown note is not modified.
 
-### 3. Dayspan record and source link
+### 3. Dayspann record and source link
 
-- [ ] Selecting a card opens its Dayspan record first instead of jumping directly to the source note.
+- [ ] Selecting a card opens its Dayspann record first instead of jumping directly to the source note.
 - [ ] The record's `source` property links to the source note.
 - [ ] Selecting the `source` link opens the source note.
-- [ ] The card is still present after returning to Dayspan.
+- [ ] The card is still present after returning to Dayspann.
 
 ### 4. Manual records and duration formats
 
@@ -68,12 +68,12 @@ These checks usually take 10–15 minutes.
 
 - [ ] Records remain after restarting Obsidian.
 - [ ] Collapsed sections and settings remain after restarting.
-- [ ] On mobile, the list, registration, Dayspan record, and `source` link work.
+- [ ] On mobile, the list, registration, Dayspann record, and `source` link work.
 - [ ] When using Obsidian Sync, iCloud, or another supported setup, records reach the other device.
 
 ## Report your result
 
-If everything works, your environment and a short “all checks passed” message are enough. If you find a problem or usability concern, open a [GitHub Issue](https://github.com/shingotanaka0115/dayspan/issues/new) with this template:
+If everything works, your environment and a short “all checks passed” message are enough. If you find a problem or usability concern, open a [GitHub Issue](https://github.com/shingotanaka0115/dayspann/issues/new) with this template:
 
 ```markdown
 ## Result
@@ -87,7 +87,7 @@ If everything works, your environment and a short “all checks passed” messag
 - Device:
 - OS and version:
 - Obsidian version:
-- Dayspan version:
+- Dayspann version:
 - Obsidian display language:
 - Theme, or "Default":
 - Sync method, if any:
@@ -114,12 +114,12 @@ Remove or hide private notes and personal information before attaching screensho
 
 ## Update the beta
 
-Run **BRAT: Check for updates to all beta plugins and UPDATE** from the Command palette. If an old interface or behavior remains after updating, disable and re-enable Dayspan or restart Obsidian.
+Run **BRAT: Check for updates to all beta plugins and UPDATE** from the Command palette. If an old interface or behavior remains after updating, disable and re-enable Dayspann or restart Obsidian.
 
 ## Finish testing
 
-1. Disable Dayspan under **Settings → Community plugins**.
-2. Uninstall Dayspan.
-3. Remove Dayspan from BRAT's managed beta plugins.
+1. Disable Dayspann under **Settings → Community plugins**.
+2. Uninstall Dayspann.
+3. Remove Dayspann from BRAT's managed beta plugins.
 
-Uninstalling Dayspan does not automatically delete the Markdown record files it created in your vault. Review and delete those files manually only if you no longer need them.
+Uninstalling Dayspann does not automatically delete the Markdown record files it created in your vault. Review and delete those files manually only if you no longer need them.

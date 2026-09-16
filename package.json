@@ -1,6 +1,6 @@
 {
-  "name": "dayspan",
-  "version": "0.1.4",
+  "name": "dayspann",
+  "version": "0.1.5",
   "private": true,
   "description": "Track time elapsed since or remaining until dates selected from your Markdown notes.",
   "main": "main.js",

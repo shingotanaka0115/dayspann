@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to Dayspan will be documented in this file.
+All notable changes to Dayspann will be documented in this file.
+
+## 0.1.5
+
+- Rename the public-facing plugin from Dayspan to Dayspann.
+- Preserve the internal plugin ID and support existing `Dayspan` record folders and `type: dayspan` records.
+- Use `Dayspann` and `type: dayspann` for new record folders and records.
+- Update documentation and BRAT instructions for the renamed GitHub repository.
 
 ## 0.1.4
 

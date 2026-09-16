@@ -1,21 +1,21 @@
-# Releasing Dayspan
+# Releasing Dayspann
 
 This document is the maintainer checklist for beta and Community Plugins releases.
 
 ## First-time setup
 
 1. Create a free GitHub account.
-2. Create a public repository named `dayspan`.
+2. Create a public repository named `dayspann`.
 3. Add the repository as this local project's remote:
 
    ```bash
-   git remote add origin https://github.com/<github-username>/dayspan.git
+   git remote add origin https://github.com/<github-username>/dayspann.git
    ```
 
 4. Commit and push the `main` branch.
 5. Confirm that the CI workflow passes on GitHub.
 
-Never commit `data.json`, `main.js`, `node_modules`, or real Dayspan records. They are excluded by `.gitignore`, but always review `git status` before committing.
+Never commit `data.json`, `main.js`, `node_modules`, or real Dayspann records. They are excluded by `.gitignore`, but always review `git status` before committing.
 
 ## Prepare a version
 

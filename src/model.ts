@@ -30,7 +30,7 @@ export interface DayspanDraft {
 
 export function serializeRecord(draft: DayspanDraft): string {
   const frontmatter: Record<string, string | number> = {
-    type: "dayspan",
+    type: "dayspann",
     title: draft.title.trim(),
     date: draft.date,
     display: draft.displayMode ?? DEFAULT_DISPLAY_MODE,
@@ -56,7 +56,7 @@ export function parseRecord(file: TFile, content: string): DayspanRecord | null 
     return null;
   }
 
-  if (data.type !== "dayspan") return null;
+  if (data.type !== "dayspann" && data.type !== "dayspan") return null;
   const title = typeof data.title === "string" ? data.title.trim() : "";
   const date =
     data.date instanceof Date
