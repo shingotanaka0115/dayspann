@@ -2,6 +2,11 @@
 
 All notable changes to Dayspann will be documented in this file.
 
+## 0.1.6
+
+- Replace the functional list-view tagline with the concept-led Dayspann tagline.
+- Use “日々の中から、記念日をすくい上げる。” in Japanese and “Uncover the days worth remembering.” in English.
+
 ## 0.1.5
 
 - Rename the public-facing plugin from Dayspan to Dayspann.

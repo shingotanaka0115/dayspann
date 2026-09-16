@@ -20,7 +20,7 @@ Thank you for testing Dayspann. You do not need to complete every check. Testing
    ```
 
 6. Open **Settings → Community plugins** and enable **Dayspann**.
-7. Confirm that the Dayspann version is `0.1.5` or later.
+7. Confirm that the Dayspann version is `0.1.6` or later.
 8. Open Dayspann from its ribbon icon or run **Open list** from the Command palette.
 
 You can also enter the same repository with **Add beta plugin** in BRAT's settings.
