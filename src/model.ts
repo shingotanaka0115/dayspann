@@ -12,6 +12,7 @@ export interface DayspannRecord {
   title: string;
   date: string;
   displayMode: DayspannDisplayMode;
+  archived: boolean;
   excerpt: string;
   sourcePath?: string;
   sourceLine?: number;
@@ -22,6 +23,7 @@ export interface DayspannDraft {
   title: string;
   date: string;
   displayMode?: DayspannDisplayMode;
+  archived?: boolean;
   excerpt: string;
   sourcePath?: string;
   sourceLine?: number;
@@ -29,7 +31,7 @@ export interface DayspannDraft {
 }
 
 export function serializeRecord(draft: DayspannDraft): string {
-  const frontmatter: Record<string, string | number> = {
+  const frontmatter: Record<string, string | number | boolean> = {
     type: "dayspann",
     title: draft.title.trim(),
     date: draft.date,
@@ -37,6 +39,7 @@ export function serializeRecord(draft: DayspannDraft): string {
     created: draft.created ?? new Date().toISOString(),
   };
 
+  if (draft.archived) frontmatter.archived = true;
   if (draft.sourcePath) frontmatter.source = formatSourceReference(draft.sourcePath);
   if (typeof draft.sourceLine === "number") frontmatter.sourceLine = draft.sourceLine;
 
@@ -73,6 +76,7 @@ export function parseRecord(file: TFile, content: string): DayspannRecord | null
     title,
     date,
     displayMode: normalizeDisplayMode(data.display),
+    archived: data.archived === true,
     excerpt: match[2].trim(),
     sourcePath: parseSourceReference(data.source),
     sourceLine: Number.isInteger(sourceLine) && sourceLine > 0 ? sourceLine : undefined,

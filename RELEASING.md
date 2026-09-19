@@ -51,6 +51,7 @@ Before releasing, also test in a separate Obsidian vault:
 - Past, today, and future grouping
 - All five date-span formats, including month ends and leap years
 - Color settings and section reordering
+- Archiving, restoring, and archive-section collapse persistence
 - Restart and reload persistence
 - Light and dark themes
 - Desktop and mobile layouts

@@ -50,6 +50,7 @@ export interface DayspannSettings {
   pastColor: string;
   sectionOrder: DayspannSectionKind[];
   collapsedSections: DayspannSectionKind[];
+  archiveCollapsed: boolean;
 }
 
 const DEFAULT_SETTINGS: DayspannSettings = {
@@ -58,6 +59,7 @@ const DEFAULT_SETTINGS: DayspannSettings = {
   pastColor: "#f59e0b",
   sectionOrder: [...DEFAULT_SECTION_ORDER],
   collapsedSections: [],
+  archiveCollapsed: true,
 };
 
 export default class DayspannPlugin extends Plugin {
@@ -228,6 +230,7 @@ export default class DayspannPlugin extends Plugin {
         title: record.title,
         date: record.date,
         displayMode: record.displayMode,
+        archived: record.archived,
         excerpt: record.excerpt,
         sourcePath: record.sourcePath,
         sourceLine: record.sourceLine,
@@ -249,6 +252,21 @@ export default class DayspannPlugin extends Plugin {
     if (!confirmed) return;
     await this.app.fileManager.trashFile(record.file);
     new Notice(this.t("notice.trashed"));
+    await this.refreshViews();
+  }
+
+  async setRecordArchived(record: DayspannRecord, archived: boolean): Promise<void> {
+    await this.app.fileManager.processFrontMatter(
+      record.file,
+      (frontmatter: Record<string, unknown>) => {
+        if (archived) {
+          frontmatter.archived = true;
+        } else {
+          delete frontmatter.archived;
+        }
+      }
+    );
+    new Notice(this.t(archived ? "notice.archived" : "notice.restored"));
     await this.refreshViews();
   }
 
@@ -322,6 +340,11 @@ export default class DayspannPlugin extends Plugin {
     await this.saveSettings();
   }
 
+  async setArchiveCollapsed(collapsed: boolean): Promise<void> {
+    this.settings.archiveCollapsed = collapsed;
+    await this.saveSettings();
+  }
+
   private async loadSettings(): Promise<void> {
     const saved = (await this.loadData()) as Partial<DayspannSettings> | null;
     const savedStorageFolder = saved?.storageFolder?.trim();
@@ -338,6 +361,7 @@ export default class DayspannPlugin extends Plugin {
       storageFolder,
       sectionOrder: normalizeSectionOrder(saved?.sectionOrder),
       collapsedSections: normalizeCollapsedSections(saved?.collapsedSections),
+      archiveCollapsed: saved?.archiveCollapsed ?? DEFAULT_SETTINGS.archiveCollapsed,
     };
   }
 

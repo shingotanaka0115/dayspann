@@ -16,6 +16,8 @@ interface CountedRecord {
   difference: number;
 }
 
+type ViewSectionKind = DayspannSectionKind | "archive";
+
 export class DayspannView extends ItemView {
   private refreshVersion = 0;
   private resizeObserver: ResizeObserver | null = null;
@@ -98,11 +100,15 @@ export class DayspannView extends ItemView {
       return;
     }
 
-    const future = counted
+    const active = counted.filter((item) => !item.record.archived);
+    const archived = counted
+      .filter((item) => item.record.archived)
+      .sort((a, b) => b.record.date.localeCompare(a.record.date));
+    const future = active
       .filter((item) => item.difference > 0)
       .sort((a, b) => a.difference - b.difference || a.record.date.localeCompare(b.record.date));
-    const todayRecords = counted.filter((item) => item.difference === 0);
-    const past = counted
+    const todayRecords = active.filter((item) => item.difference === 0);
+    const past = active
       .filter((item) => item.difference < 0)
       .sort((a, b) => Math.abs(a.difference) - Math.abs(b.difference));
 
@@ -119,20 +125,31 @@ export class DayspannView extends ItemView {
       const section = sections[kind];
       this.renderSection(root, section.icon, section.title, kind, section.items);
     }
+
+    this.renderSection(
+      root,
+      "archive",
+      this.plugin.t("section.archive"),
+      "archive",
+      archived
+    );
   }
 
   private renderSection(
     root: HTMLElement,
     icon: string,
     title: string,
-    kind: DayspannSectionKind,
+    kind: ViewSectionKind,
     items: CountedRecord[]
   ): void {
     if (!items.length) return;
     const section = root.createEl("section", {
       cls: `dayspann-section dayspann-section--${kind}`,
     });
-    const collapsed = this.plugin.settings.collapsedSections.includes(kind);
+    const collapsed =
+      kind === "archive"
+        ? this.plugin.settings.archiveCollapsed
+        : this.plugin.settings.collapsedSections.includes(kind);
     section.toggleClass("dayspann-section--collapsed", collapsed);
 
     const listId = `dayspann-list-${this.viewId}-${kind}`;
@@ -171,7 +188,11 @@ export class DayspannView extends ItemView {
           { title }
         )
       );
-      void this.plugin.setSectionCollapsed(kind, nextCollapsed);
+      if (kind === "archive") {
+        void this.plugin.setArchiveCollapsed(nextCollapsed);
+      } else {
+        void this.plugin.setSectionCollapsed(kind, nextCollapsed);
+      }
     });
   }
 
@@ -202,6 +223,7 @@ export class DayspannView extends ItemView {
         menuItem.setTitle(this.plugin.t("action.openRecord")).setIcon("file-text").onClick(() => void this.plugin.openRecordFile(record))
       );
       menu.addSeparator();
+      this.addArchiveMenuItem(menu, record);
       menu.addItem((menuItem) =>
         menuItem.setTitle(this.plugin.t("action.delete")).setIcon("trash-2").onClick(() => void this.plugin.deleteRecord(record))
       );
@@ -254,12 +276,23 @@ export class DayspannView extends ItemView {
         );
       }
       menu.addSeparator();
+      this.addArchiveMenuItem(menu, record);
       menu.addItem((menuItem) =>
         menuItem.setTitle(this.plugin.t("action.delete")).setIcon("trash-2").onClick(() => void this.plugin.deleteRecord(record))
       );
       const mouse = event as MouseEvent;
       menu.showAtPosition({ x: mouse.clientX, y: mouse.clientY });
     });
+  }
+
+  private addArchiveMenuItem(menu: Menu, record: DayspannRecord): void {
+    const archived = record.archived;
+    menu.addItem((menuItem) =>
+      menuItem
+        .setTitle(this.plugin.t(archived ? "action.restore" : "action.archive"))
+        .setIcon(archived ? "archive-restore" : "archive")
+        .onClick(() => void this.plugin.setRecordArchived(record, !archived))
+    );
   }
 
   private iconButton(

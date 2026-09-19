@@ -28,6 +28,7 @@ dayspann does not automatically analyze your vault. You choose what becomes an a
   - Years, months, and days
 - Reorder the three sections.
 - Expand or collapse each section and remember its state.
+- Archive entries without deleting them, then restore them to the main list when needed.
 - Customize colors for future and past records.
 - Keep a clickable link to the original source note in each saved record.
 - Store every record as a readable Markdown file in your vault.

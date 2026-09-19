@@ -2,6 +2,13 @@
 
 All notable changes to dayspann will be documented in this file.
 
+## 0.1.8
+
+- Archive entries without deleting their Markdown files or source-note links.
+- Keep archived entries out of the future, today, and past sections.
+- Show archived entries in a separate, collapsed section and let users restore them to the main list.
+- Preserve archive state and the archive section's collapsed state across refreshes and restarts.
+
 ## 0.1.7
 
 - Standardize the display name as lowercase `dayspann`.

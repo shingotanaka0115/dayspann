@@ -60,6 +60,8 @@ These checks usually take 10–15 minutes.
 ### 5. List controls and layout
 
 - [ ] Each section can be collapsed and expanded.
+- [ ] Archiving an entry removes it from the three main sections and places it in the Archive section at the bottom.
+- [ ] An archived entry can be restored to the main list.
 - [ ] Section order can be changed in settings.
 - [ ] Past and future colors can be changed.
 - [ ] Text and duration values do not overlap in a narrow pane.
@@ -68,6 +70,7 @@ These checks usually take 10–15 minutes.
 
 - [ ] Records remain after restarting Obsidian.
 - [ ] Collapsed sections and settings remain after restarting.
+- [ ] Archive states and the Archive section's collapsed state remain after restarting.
 - [ ] On mobile, the list, registration, dayspann record, and `source` link work.
 - [ ] When using Obsidian Sync, iCloud, or another supported setup, records reach the other device.
 

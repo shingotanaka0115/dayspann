@@ -18,6 +18,10 @@
   --dayspann-accent: var(--interactive-accent);
 }
 
+.dayspann-section--archive {
+  --dayspann-accent: var(--text-muted);
+}
+
 .dayspann-header {
   position: relative;
   display: flex;
